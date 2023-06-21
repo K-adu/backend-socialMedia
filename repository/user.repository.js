@@ -22,8 +22,34 @@ const findUserByEmail = async (email)=>{
     return findEmail
 }
 
+const checkExistingUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const userFound = await User.findOne({email: email})
+
+    if (userFound) {
+      const isMatch = await userFound.matchPassword(password);
+      if (isMatch) {
+        // token = await userFound.generateAuthToken()
+        // return token
+        res.send({message: 'login working properly'});
+      } else {
+        res.send({message: 'Invalid login details'});
+      }
+    } else {
+      res.send({message: 'User not found'});
+    }
+  } catch (e) {
+    console.log(e)
+  }
+};
+
+
+
 
 module.exports = {
     findUserByEmail,
     createNewUser,
+    checkExistingUser
 }

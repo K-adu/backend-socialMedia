@@ -1,5 +1,5 @@
 const signUpValidator= require('../handlers/joi.handler')
-const {findUserByEmail,createNewUser} = require('../repository/user.repository')
+const {findUserByEmail,createNewUser,checkExistingUser} = require('../repository/user.repository')
 
 
 const signUpController = async (req,res)=>{
@@ -16,4 +16,14 @@ const signUpController = async (req,res)=>{
     }
 }
 
-module.exports = signUpController
+
+
+const loginController = async (req,res)=>{
+   await checkExistingUser(req,res)
+
+}
+
+module.exports = {
+    signUpController,
+    loginController,
+}
