@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
+        unique: true
         
     },
     password: {
@@ -31,28 +32,33 @@ const userSchema = new mongoose.Schema({
     location: [{
         longitude: {type: Number},
         latitude: {type: Number},
-    }]
+    }],
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }],
 
-})
+},{    timestamp: true,})
 
 
 
-userSchema.pre('save', function(next) {                                                                                                                                        
-    if(this.password) {                                                                                                                                                        
-        const salt = bcrypt.genSaltSync(10)                                                                                                                                     
-        this.password  = bcrypt.hashSync(this.password, salt)                                                                                                                
-    }                                                                                                                                                                          
-    next()                                                                                                                                                                     
-})   
+userSchema.methods.hashpassword = async (password) => {
+    return await bcrypt.hash(password, 8);
+  };
+  
+
 
 
 userSchema.methods.matchPassword = async function (password) {
+    console.log(this.password)
     return await bcrypt.compare(password, this.password);
   };
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, 'thisisit')
+    const token = jwt.sign({ _id: user._id.toString() }, 'mongoproject')
   
     user.tokens = user.tokens.concat({ token })
     await user.save()

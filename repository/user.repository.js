@@ -11,13 +11,20 @@ const createNewUser = async (req, res) => {
       location: req.body.location
     });
 
+
+
+    newUser.password = await newUser.hashpassword(req.body.password);
+    
     await User.create(newUser).then(()=>{
-        return res.status(400).send('user created successfully')
-    });
+      return res.status(400).send('user created successfully')
+  });
+
   };
   
 
-const findUserByEmail = async (email)=>{
+const findUserByEmail = async (req)=>{
+  const {email} = req.body
+    console.log(email)
     const findEmail = await User.findOne({email: email})
     return findEmail
 }
@@ -27,12 +34,13 @@ const checkExistingUser = async (req, res) => {
 
   try {
     const userFound = await User.findOne({email: email})
-
+    console.log(password)
     if (userFound) {
       const isMatch = await userFound.matchPassword(password);
+      console.log(isMatch)
       if (isMatch) {
         token = await userFound.generateAuthToken()
-        res.send({message: 'login working properly', token});
+        res.send({message: `login working properly ${token}`});
       } else {
         res.send({message: 'Invalid login details'});
       }

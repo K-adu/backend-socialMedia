@@ -4,10 +4,11 @@ const {findUserByEmail,createNewUser,checkExistingUser} = require('../repository
 
 const signUpController = async (req,res)=>{
     const checkFields = signUpValidator(req,res)
-    const {email} = req.body.email
-    const checkEmailExists = await findUserByEmail(email)
+    const checkEmailExists = await findUserByEmail(req)
     if(checkFields){
-        if(!checkEmailExists){
+        if(checkEmailExists){
+            return res.status(400).send('Email already Exist')
+        }else{
             await createNewUser(req,res)
         }
 
@@ -17,9 +18,9 @@ const signUpController = async (req,res)=>{
 }
 
 
-
+ 
 const loginController = async (req,res)=>{
-   await checkExistingUser(req,res)
+    checkExistingUser(req,res)
 
 }
 
