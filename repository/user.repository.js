@@ -31,9 +31,8 @@ const checkExistingUser = async (req, res) => {
     if (userFound) {
       const isMatch = await userFound.matchPassword(password);
       if (isMatch) {
-        // token = await userFound.generateAuthToken()
-        // return token
-        res.send({message: 'login working properly'});
+        token = await userFound.generateAuthToken()
+        res.send({message: 'login working properly', token});
       } else {
         res.send({message: 'Invalid login details'});
       }
