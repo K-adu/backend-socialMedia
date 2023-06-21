@@ -58,7 +58,7 @@ userSchema.methods.matchPassword = async function (password) {
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({ _id: user._id.toString() }, 'mongoproject')
+    const token = jwt.sign({ _id: user._id.toString() }, 'nikejustdoit')
   
     user.tokens = user.tokens.concat({ token })
     await user.save()

@@ -21,6 +21,6 @@ const postsSchema = new mongoose.Schema({
 
 })
 
-const Posts = mongoose.model('User',userSchema)
+const Posts = mongoose.model('Posts',postsSchema)
 
 module.exports = Posts
