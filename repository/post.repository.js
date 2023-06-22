@@ -1,11 +1,11 @@
 const Posts = require('../models/posts.models');
 
-const insertPostsToDb = async (title, image, owner, req) => {
+const insertPostsToDb = async (title, image, req) => {
   console.log(req.user._id);
   const newPost = new Posts({
     title: title,
     image: image,
-    owner: owner
+    owner: req.user._id
   });
   await newPost.save();
 };
@@ -16,9 +16,15 @@ const getAllPosts = async()=>{
  return posts
 }
 
+const getAuthUserPosts=(req,res)=>{
+  const id = req.user._id
+  const getAuthPosts = Posts.find({owner: id})
+  return getAuthPosts
+}
 
 
 module.exports = {
   insertPostsToDb,
   getAllPosts,
+  getAuthUserPosts,
 };
