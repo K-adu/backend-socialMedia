@@ -10,6 +10,15 @@ const insertPostsToDb = async (title, image, owner, req) => {
   await newPost.save();
 };
 
+
+const getAllPosts = async()=>{
+ const posts =  await Posts.find()
+ return posts
+}
+
+
+
 module.exports = {
-  insertPostsToDb
+  insertPostsToDb,
+  getAllPosts,
 };

@@ -1,4 +1,4 @@
-const { insertPostsToDb } = require('../repository/post.repository');
+const { insertPostsToDb,getAllPosts } = require('../repository/post.repository');
 
 const createPost = async (req, res) => {
   try {
@@ -12,6 +12,23 @@ const createPost = async (req, res) => {
   }
 };
 
+
+const getPosts =async (req,res)=>{
+  try{
+     const posts = await getAllPosts()
+      res.status(200).send(posts)
+  }catch(e){
+    res.status(400).send('failed to fetch posts')
+  }
+
+}
+
+
+
+
+
+
 module.exports = {
-  createPost
+  createPost,
+  getPosts,
 };
