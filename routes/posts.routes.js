@@ -7,6 +7,8 @@ router = express.Router()
 router.post('/user/post',auth,createPost)
 
 
+// router.get('/feed',auth,getPosts)
+
 
 module.exports = router
 
