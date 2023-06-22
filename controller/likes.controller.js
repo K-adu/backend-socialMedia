@@ -1,15 +1,16 @@
-const Like = require('../models/likes.models')
+// const Like = require('../models/likes.models')
 
-const likeaPostController = (req,res)=>{    
-    const postId = req.params.postid
-    const userId = req.user._id
+// const likeaPostController = async(req,res)=>{    
+//     const postId = req.params.postid
+//     const userId = req.user._id
+
+//     const likes = await addingLikesRepository()
 
     
-    
-}
+// }
 
 
 
-module.exports = {
-    likeaPostController
-}
+// module.exports = {
+//     likeaPostController
+// }
