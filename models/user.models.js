@@ -12,26 +12,26 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-        
+
     },
     password: {
         type: String,
         required: true,
-        
+
     },
     age: {
         type: Number,
         required: true,
-        
+
     },
     address: [{
-        city: {type: String},
-        state: {type: String},
-        country: {type:String},
+        city: { type: String },
+        state: { type: String },
+        country: { type: String },
     }],
     location: [{
-        longitude: {type: Number},
-        latitude: {type: Number},
+        longitude: { type: Number },
+        latitude: { type: Number },
     }],
     tokens: [{
         token: {
@@ -40,33 +40,33 @@ const userSchema = new mongoose.Schema({
         }
     }],
 
-},{    timestamp: true,})
+}, { timestamp: true, })
 
 
 
 userSchema.methods.hashpassword = async (password) => {
     return await bcrypt.hash(password, 8);
-  };
-  
+};
+
 
 
 
 userSchema.methods.matchPassword = async function (password) {
     console.log(this.password)
     return await bcrypt.compare(password, this.password);
-  };
+};
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
     const token = jwt.sign({ _id: user._id.toString() }, 'nikejustdoit')
-  
+
     user.tokens = user.tokens.concat({ token })
     await user.save()
-  
+
     return token
-  }
-  
-  
-const User = mongoose.model('User',userSchema)
+}
+
+
+const User = mongoose.model('User', userSchema)
 
 module.exports = User

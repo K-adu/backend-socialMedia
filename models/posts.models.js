@@ -6,7 +6,7 @@ const postsSchema = new mongoose.Schema({
         required: true,
 
     },
-    image:{
+    image: {
         public_id: String,
         url: String
     },
@@ -21,6 +21,6 @@ const postsSchema = new mongoose.Schema({
 
 })
 
-const Posts = mongoose.model('Posts',postsSchema)
+const Posts = mongoose.model('Posts', postsSchema)
 
 module.exports = Posts

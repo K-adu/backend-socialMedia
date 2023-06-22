@@ -1,16 +1,23 @@
-// const Like = require('../models/likes.models')
-
-// const likeaPostController = async(req,res)=>{    
-//     const postId = req.params.postid
-//     const userId = req.user._id
-
-//     const likes = await addingLikesRepository()
-
-    
-// }
+const Like = require('../models/likes.models')
+const { likeaPostDb } = require('../repository/likes.repository')
 
 
+const likeaPostController = async (req, res) => {
+    try {
+        const postId = req.params.postid
+        const userId = req.user._id
 
-// module.exports = {
-//     likeaPostController
-// }
+        const likes = await likeaPostDb(postId, userId)
+        res.status(200).send('like added successfully')
+    } catch (e) {
+
+    }
+
+
+}
+
+
+
+module.exports = {
+    likeaPostController,
+}

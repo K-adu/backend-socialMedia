@@ -11,14 +11,14 @@ const insertPostsToDb = async (title, image, req) => {
 };
 
 
-const getAllPosts = async()=>{
- const posts =  await Posts.find()
- return posts
+const getAllPosts = async () => {
+  const posts = await Posts.find()
+  return posts
 }
 
-const getAuthUserPosts=(req,res)=>{
+const getAuthUserPosts = (req, res) => {
   const id = req.user._id
-  const getAuthPosts = Posts.find({owner: id})
+  const getAuthPosts = Posts.find({ owner: id })
   return getAuthPosts
 }
 

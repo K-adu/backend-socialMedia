@@ -1,8 +1,8 @@
-const { insertPostsToDb,getAllPosts,getAuthUserPosts } = require('../repository/post.repository');
+const { insertPostsToDb, getAllPosts, getAuthUserPosts } = require('../repository/post.repository');
 
 const createPost = async (req, res) => {
   try {
-    const { title, image} = req.body;
+    const { title, image } = req.body;
     console.log(title);
     await insertPostsToDb(title, image, req); // Pass the req object to the repository function
     res.status(200).send('Post added successfully');
@@ -13,22 +13,22 @@ const createPost = async (req, res) => {
 };
 
 
-const getPosts =async (req,res)=>{
-  try{
-     const posts = await getAllPosts()
-      res.status(200).send(posts)
-  }catch(e){
+const getPosts = async (req, res) => {
+  try {
+    const posts = await getAllPosts()
+    res.status(200).send(posts)
+  } catch (e) {
     res.status(400).send('failed to fetch posts')
   }
 
 }
 
-const getUserPosts = async(req,res)=>{
-  try{
+const getUserPosts = async (req, res) => {
+  try {
     console.log(req.user._id)
-    const userPosts = await getAuthUserPosts(req,res)
+    const userPosts = await getAuthUserPosts(req, res)
     res.status(200).send(userPosts)
-  }catch(e){
+  } catch (e) {
     res.status(400).send('failed in controller')
   }
 }

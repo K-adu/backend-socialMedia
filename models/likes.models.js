@@ -1,20 +1,20 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const likesSchema = new mongoose.Schema({
     count: {
         type: Number,
+        default: 0 // Initialize count to 0
     },
-    user: {
+    users: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
-    },
-    Post: {
+    }],
+    post: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Posts'
+        ref: 'Post'
     }
+});
 
-})
+const Like = mongoose.model('Like', likesSchema);
 
-const Like = mongoose.model('Likes',likesSchema)
-
-module.exports = Like
+module.exports = Like;

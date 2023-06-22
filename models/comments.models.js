@@ -12,11 +12,11 @@ const commentsSchema = new mongoose.Schema({
     },
     post: {
         type: mongoose.Schema.Types.ObjectId,
-        ref:'Posts',
+        ref: 'Posts',
     }
 
 })
 
-const Comments = mongoose.model('Comments',commentsSchema)
+const Comments = mongoose.model('Comments', commentsSchema)
 
 module.exports = Comments
