@@ -13,3 +13,8 @@ const hobbiesSchema = new mongoose.Schema({
         ref: 'User'
     }
 })
+
+const Hobbies = mongoose.model('Hobbies',hobbiesSchema)
+
+
+module.exports = Hobbies
