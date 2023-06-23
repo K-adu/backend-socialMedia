@@ -7,13 +7,17 @@ const likesSchema = new mongoose.Schema({
     },
     users: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        unique: true
     }],
     post: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
     }
 });
+likesSchema.index({ post: 1, users: 1 }, { unique: true });
+
+
 
 const Like = mongoose.model('Like', likesSchema);
 
