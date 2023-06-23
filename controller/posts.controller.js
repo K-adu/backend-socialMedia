@@ -1,4 +1,4 @@
-const { insertPostsToDb, getAllPosts, getAuthUserPosts } = require('../repository/post.repository');
+const { insertPostsToDb, getAllPosts, getAuthUserPosts, getUserPostCountsDb } = require('../repository/post.repository');
 
 const createPost = async (req, res) => {
   try {
@@ -33,11 +33,21 @@ const getUserPosts = async (req, res) => {
   }
 }
 
+const getUserPostCounts = async (req, res) => {
+  try{
+    const totalPostCount = await getUserPostCountsDb()
+    res.status(200).send(totalPostCount)
+  }catch(e){
+    re.status(200).send('failed in the repo code')
+  }
+  
 
+}
 
 
 module.exports = {
   createPost,
   getPosts,
   getUserPosts,
+  getUserPostCounts,
 };

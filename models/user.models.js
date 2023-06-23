@@ -24,6 +24,10 @@ const userSchema = new mongoose.Schema({
         required: true,
 
     },
+    posts: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Posts'
+    }],
     address: [{
         city: { type: String },
         state: { type: String },

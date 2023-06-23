@@ -3,10 +3,10 @@ const { signUpController, loginController } = require('../controller/user.contro
 
 const router = express.Router()
 
-
+//signup the user
 router.post('/users/signup', signUpController)
 
-
+//login the user
 router.post('/users/login', loginController)
 
 
