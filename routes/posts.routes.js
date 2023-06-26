@@ -15,7 +15,7 @@ router.get('/posts', auth, getPosts)
 router.get('/myposts/', auth, getUserPosts)
 
 //counting the post of respective users
-router.get('/getpostcount',getUserPostCounts)
+router.get('/postcount',getUserPostCounts)
 
 //update existing post
 // router.patch('')

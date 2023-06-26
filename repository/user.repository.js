@@ -16,7 +16,7 @@ const createNewUser = async (req, res) => {
   newUser.password = await newUser.hashpassword(req.body.password);
 
   await User.create(newUser).then(() => {
-    return res.status(400).send('user created successfully')
+    return res.render('login')
   });
 
 };
@@ -40,7 +40,7 @@ const checkExistingUser = async (req, res) => {
       console.log(isMatch)
       if (isMatch) {
         token = await userFound.generateAuthToken()
-        res.send({ message: `login working properly ${token}` });
+        res.render('home', {token: token})
       } else {
         res.send({ message: 'Invalid login details' });
       }

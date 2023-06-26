@@ -36,9 +36,9 @@ const getUserPosts = async (req, res) => {
 const getUserPostCounts = async (req, res) => {
   try{
     const totalPostCount = await getUserPostCountsDb()
-    res.status(200).send(totalPostCount)
+    res.render('pages/postcount', {users: totalPostCount})
   }catch(e){
-    re.status(200).send('failed in the repo code')
+    res.status(200).send('failed in the repo code')
   }
   
 

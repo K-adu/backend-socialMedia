@@ -17,7 +17,7 @@ const insertPostsToDb = async (title, image, req) => {
 
 
 const getAllPosts = async () => {
-  const posts = await Posts.find()
+  const posts = await Posts.find().populate('owner', 'fullName')
   return posts
 }
 
@@ -43,6 +43,7 @@ const getUserPostCountsDb = async () => {
         $project: {
           _id: 1,
           fullName: 1,
+          email: 1,
           postCount: { $size: '$posts' }
         }
       }
