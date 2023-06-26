@@ -2,12 +2,15 @@
 {{!< layouts/main}} <!-- Specify the layout template name -->
 
 
- <script src="script.js"></script>
-{{> header}} <!-- Include the header partial -->
 
+{{> header}} <!-- Include the header partial -->
+<script type="text/javaScript">
+    let token = "{{token}}"
+
+</script>
 <section>
   <h1>Welcome to the EBgram</h1>
   <p>Token: {{token}}</p>
 </section>
-
+ <script src="js/script.js"></script>
 {{>footer}}

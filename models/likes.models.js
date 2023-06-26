@@ -14,7 +14,7 @@ const likesSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Post'
     }
-});
+}, {timestamp: true,});
 likesSchema.index({ post: 1, users: 1 }, { unique: true });
 
 

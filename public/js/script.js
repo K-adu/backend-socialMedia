@@ -1,9 +1,9 @@
 
-document.addEventListener("DOMContentLoaded", function() {
 
-    var token = "{{token}}";
-  
+// Save the token to local storage
+function saveTokenToLocalStorage(token) {
+  localStorage.setItem('token', token);
+  console.log('workint till here')
+}
 
-    sessionStorage.setItem("token", token);
-  });
-  
+saveTokenToLocalStorage(token);

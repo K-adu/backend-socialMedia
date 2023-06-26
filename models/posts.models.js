@@ -14,12 +14,8 @@ const postsSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
-    },
 
-})
+},{ timestamp: true, })
 
 const Posts = mongoose.model('Posts', postsSchema)
 
