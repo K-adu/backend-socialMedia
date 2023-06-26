@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Hello New User!</h1>
+    <form action="/signup" method="POST">
+      <div class="form-group">
+        <label for="fullName">Full Name:</label>
+        <input type="text" class="form-control" id="fullName" name="fullName" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <label for="age">Age:</label>
+        <input type="number" class="form-control" id="age" name="age" required>
+      </div>
+      <div class="form-group">
+        <label for="city">City:</label>
+        <input type="text" class="form-control" id="city" name="city" required>
+      </div>
+      <div class="form-group">
+        <label for="state">State:</label>
+        <input type="text" class="form-control" id="state" name="state" required>
+      </div>
+      <div class="form-group">
+        <label for="country">Country:</label>
+        <input type="text" class="form-control" id="country" name="country" required>
+      </div>
+      <div class="form-group">
+        <label for="longitude">Longitude:</label>
+        <input type="text" class="form-control" id="longitude" name="longitude" required>
+      </div>
+      <div class="form-group">
+        <label for="latitude">Latitude:</label>
+        <input type="text" class="form-control" id="latitude" name="latitude" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+    <p>Already have an account? <a href="/login">Log in</a></p>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
