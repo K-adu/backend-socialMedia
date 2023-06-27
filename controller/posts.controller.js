@@ -4,36 +4,36 @@ import { insertPostsToDb, getAllPosts, getAuthUserPosts, getUserPostCountsDb } f
 export const createPost = async (req, res) => {
   try {
     const { title, image } = req.body;
-    console.log(title);
-    await insertPostsToDb(title, image, req); // Pass the req object to the repository function
+    const ownerId = req.user.id
+    const data = {
+      title,
+      image,
+      ownerId
+
+    }
+    await insertPostsToDb(data);
     res.status(200).send('Post added successfully');
   } catch (error) {
-    console.log('Error in createPost controller:', error);
     res.status(500).send('An error occurred while creating the post');
   }
 };
 
 
 export const getPosts = async (req, res) => {
-  // try {
-    const posts = await getAllPosts(req,res)
-   // res.render('posts', {posts: posts})
-  // } catch (e) {
-  //   res.status(400).send('failed to fetch posts')
-  // }
-
+  const posts = await getAllPosts()
+  res.status(200).send(posts)
 }
 
 export const getUserPosts = async (req, res) => {
-    console.log(req.user._id)
-    const userPosts = await getAuthUserPosts(req, res)
-    res.status(200).send(userPosts)
+  const userId = req.user._id
+  const userPosts = await getAuthUserPosts(userId)
+  res.status(200).send(userPosts)
 }
 
 export const getUserPostCounts = async (req, res) => {
   try {
     const totalPostCount = await getUserPostCountsDb()
-    res.render('pages/postcount', { users: totalPostCount })
+    res.status(200).send(totalPostCount)
   } catch (e) {
     res.status(200).send('failed in the repo code')
   }
@@ -42,7 +42,7 @@ export const getUserPostCounts = async (req, res) => {
 }
 
 
-export const updatePostController = async(req,res)=>{
+export const updatePostController = async (req, res) => {
 
 }
 

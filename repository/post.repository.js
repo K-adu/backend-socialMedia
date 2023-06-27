@@ -3,70 +3,162 @@ import User from '../models/user.models.js';
 import mongoose from 'mongoose';
 
 
-export const insertPostsToDb = async (title, image, req) => {
-  console.log(req.user._id);
-  const newPost = new Posts({
-    title: title,
-    image: image,
-    owner: req.user._id
-  });
+export const insertPostsToDb = async (data) => {
+  const newPost = new Posts(data);
   await newPost.save();
-  await User.findOneAndUpdate({ _id: req.user._id }, {
+  await User.findOneAndUpdate({ _id: data.ownerId }, {
     $push: { posts: newPost._id }
   })
 };
 
 
-export const getAllPosts = async (req, res) => {
+export const getAllPosts = async () => {
   // const posts = await Posts.find().populate('owner', 'fullName')
+
+  // const posts = await Posts.aggregate([
+  //   {
+  //     $lookup: {
+  //       from: 'users',
+  //       localField: 'owner',
+  //       foreignField: '_id',
+  //       as: 'ownerDetails'
+  //     }
+  //   },
+  //   // {
+  //   //   $unwind: '$ownerDetails'
+  //   // },
+  //   {
+  //     $lookup: {
+  //       from: 'comments',
+  //       localField: '_id',
+  //       foreignField: 'post',
+  //       as: 'comments'
+  //     }
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: 'likes',
+  //       localField: '_id',
+  //       foreignField: 'post',
+  //       as: 'likes'
+  //     }
+  //   },
+  //   {
+  //     $project: {
+  //       _id: 1,
+  //       title: 1,
+  //       image: 1,
+  //       owner: '$ownerDetails.fullName',
+  //       comments: 1,
+  //       likeCount: { $size: '$likes.users' }
+  //     }
+  //   }
+  // ])
+
+
 
   const posts = await Posts.aggregate([
     {
       $lookup: {
         from: 'users',
-        localField: 'owner',
-        foreignField: '_id',
-        as: 'ownerDetails'
-      }
+        let: { ownerId: '$owner' },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ['$_id', '$$ownerId'],
+              },
+            },
+          },
+          {
+            $project: {
+              fullName: 1,
+              email: 1,
+            },
+          },
+        ],
+        as: 'user',
+      },
     },
-    // {
-    //   $unwind: '$ownerDetails'
-    // },
     {
       $lookup: {
         from: 'comments',
-        localField: '_id',
-        foreignField: 'post',
-        as: 'comments'
-      }
+        let: { postId: '$_id' },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ['$post', '$$postId'],
+              },
+            },
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'user',
+              foreignField: '_id',
+              as: 'commentUsers',
+            },
+          },
+          {
+            $project: {
+              title: 1,
+              'commentUsers.fullName': 1,
+            },
+          },
+        ],
+        as: 'comments',
+      },
     },
     {
       $lookup: {
         from: 'likes',
-        localField: '_id',
-        foreignField: 'post',
-        as: 'likes'
-      }
+        let: { postId: '$_id' },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ['$post', '$$postId'],
+              },
+            },
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'users',
+              foreignField: '_id',
+              as: 'likeUsers',
+            },
+          },
+          {
+            $project: {
+              count: 1,
+              'likeUsers.fullName': 1,
+            },
+          },
+        ],
+        as: 'likes',
+      },
     },
     {
       $project: {
-        _id: 1,
+        'user.fullName': 1,
+        'user.email': 1,
         title: 1,
-        image: 1,
-        owner: '$ownerDetails.fullName',
-        comments: 1,
-        likeCount: { $size: '$likes.users' }
-      }
-    }
-  ])
-  console.log(posts)
-  res.status(200).send(posts)
+        'comments.title': 1,
+        'comments.commentUsers.fullName': 1,
+        'likes.count': 1,
+        'likes.likeUsers.fullName': 1,
+      },
+    },
+  ]);
+
+  return posts
 }
 
-export const getAuthUserPosts = async (req, res) => {
-  const userId = req.user._id; // Assuming the logged-in user ID is available in req.user._id
+export const getAuthUserPosts = async (userId) => {
 
-  const authUserPosts = await Posts.aggregate([
+  const posts = await Posts.aggregate([
     {
       $match: {
         owner: new mongoose.Types.ObjectId(userId)
@@ -75,44 +167,149 @@ export const getAuthUserPosts = async (req, res) => {
     {
       $lookup: {
         from: 'users',
-        localField: 'owner',
-        foreignField: '_id',
-        as: 'ownerDetails'
-      }
+        let: { ownerId: '$owner' },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ['$_id', '$$ownerId'],
+              },
+            },
+          },
+          {
+            $project: {
+              fullName: 1,
+              email: 1,
+            },
+          },
+        ],
+        as: 'user',
+      },
     },
-    // {
-    //   $unwind: '$ownerDetails'
-    // },
     {
       $lookup: {
         from: 'comments',
-        localField: '_id',
-        foreignField: 'post',
-        as: 'comments'
-      }
+        let: { postId: '$_id' },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ['$post', '$$postId'],
+              },
+            },
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'user',
+              foreignField: '_id',
+              as: 'commentUsers',
+            },
+          },
+          {
+            $project: {
+              title: 1,
+              'commentUsers.fullName': 1,
+            },
+          },
+        ],
+        as: 'comments',
+      },
     },
     {
       $lookup: {
         from: 'likes',
-        localField: '_id',
-        foreignField: 'post',
-        as: 'likes'
-      }
+        let: { postId: '$_id' },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $eq: ['$post', '$$postId'],
+              },
+            },
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'users',
+              foreignField: '_id',
+              as: 'likeUsers',
+            },
+          },
+          {
+            $project: {
+              count: 1,
+              'likeUsers.fullName': 1,
+            },
+          },
+        ],
+        as: 'likes',
+      },
     },
     {
       $project: {
-        _id: 1,
+        'user.fullName': 1,
+        'user.email': 1,
         title: 1,
-        image: 1,
-        owner: '$ownerDetails.fullName',
-        comments: 1,
-        likeCount: { $size: '$likes.users' }
-      }
-    }
-  ])
-  console.log(authUserPosts)
+        'comments.title': 1,
+        'comments.commentUsers.fullName': 1,
+        'likes.count': 1,
+        'likes.likeUsers.fullName': 1,
+      },
+    },
+  ]);
 
+  return posts
 }
+
+
+
+
+
+
+// const authUserPosts = await Posts.aggregate([
+
+//   {
+//     $lookup: {
+//       from: 'users',
+//       localField: 'owner',
+//       foreignField: '_id',
+//       as: 'ownerDetails'
+//     }
+//   },
+//   // {
+//   //   $unwind: '$ownerDetails'
+//   // },
+//   {
+//     $lookup: {
+//       from: 'comments',
+//       localField: '_id',
+//       foreignField: 'post',
+//       as: 'comments'
+//     }
+//   },
+//   {
+//     $lookup: {
+//       from: 'likes',
+//       localField: '_id',
+//       foreignField: 'post',
+//       as: 'likes'
+//     }
+//   },
+//   {
+//     $project: {
+//       _id: 1,
+//       title: 1,
+//       image: 1,
+//       owner: '$ownerDetails.fullName',
+//       comments: 1,
+//       likeCount: { $size: '$likes.users' }
+//     }
+//   }
+// ])
+// console.log(authUserPosts)
+
+
 
 
 export const getUserPostCountsDb = async () => {

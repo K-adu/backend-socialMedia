@@ -1,21 +1,10 @@
 import User from '../models/user.models.js';
 
 
-
-export const createNewUser = async (req, res) => {
-  const newUser = new User({
-    fullName: req.body.fullName,
-    email: req.body.email,
-    password: req.body.password,
-    age: req.body.age,
-    address: req.body.address,
-    location: req.body.location
-  });
-
-
-
-  newUser.password = await newUser.hashpassword(req.body.password);
-
+//creating new user and hasigin password before inserting it to the db
+export const createNewUser = async (data) => {
+  const newUser = new User(date);
+  newUser.password = await newUser.hashpassword(data.password);
   await User.create(newUser).then(() => {
     return res.render('login')
   });
@@ -23,17 +12,16 @@ export const createNewUser = async (req, res) => {
 };
 
 
-export const findUserByEmail = async (req) => {
-  const { email } = req.body
-  const findEmail = await User.findOne({ email: email })
+
+export const findUserByEmail = async (data) => {
+  const findEmail = await User.findOne({ email: data })
   return findEmail
 }
 
-export const checkExistingUser = async (req, res) => {
-  const { email, password } = req.body;
-
+export const checkMatchingEmailPassword = async (data) => {
+  
   try {
-    const userFound = await User.findOne({ email: email })
+    const userFound = await User.findOne({ email: data.email })
     console.log(password)
     if (userFound) {
       const isMatch = await userFound.matchPassword(password);
