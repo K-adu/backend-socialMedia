@@ -1,6 +1,6 @@
 const Posts = require('../models/posts.models');
 const User = require('../models/user.models')
-
+const mongoose = require('mongoose')
 
 const insertPostsToDb = async (title, image, req) => {
   console.log(req.user._id);
@@ -16,7 +16,7 @@ const insertPostsToDb = async (title, image, req) => {
 };
 
 
-const getAllPosts = async (req,res) => {
+const getAllPosts = async (req, res) => {
   // const posts = await Posts.find().populate('owner', 'fullName')
 
   const posts = await Posts.aggregate([
@@ -62,10 +62,55 @@ const getAllPosts = async (req,res) => {
   res.status(200).send(posts)
 }
 
-const getAuthUserPosts = (req, res) => {
-  const id = req.user._id
-  const getAuthPosts = Posts.find({ owner: id })
-  return getAuthPosts
+const getAuthUserPosts = async (req, res) => {
+  const userId = req.user._id; // Assuming the logged-in user ID is available in req.user._id
+
+  const authUserPosts = await Posts.aggregate([
+    {
+      $match: {
+        owner: new mongoose.Types.ObjectId(userId)
+      }
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'owner',
+        foreignField: '_id',
+        as: 'ownerDetails'
+      }
+    },
+    {
+      $unwind: '$ownerDetails'
+    },
+    {
+      $lookup: {
+        from: 'comments',
+        localField: '_id',
+        foreignField: 'post',
+        as: 'comments'
+      }
+    },
+    {
+      $lookup: {
+        from: 'likes',
+        localField: '_id',
+        foreignField: 'post',
+        as: 'likes'
+      }
+    },
+    {
+      $project: {
+        _id: 1,
+        title: 1,
+        image: 1,
+        owner: '$ownerDetails.fullName',
+        comments: 1,
+        likeCount: { $size: '$likes.users' }
+      }
+    }
+  ])
+  console.log(authUserPosts)
+
 }
 
 

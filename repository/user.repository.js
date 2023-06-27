@@ -24,7 +24,6 @@ const createNewUser = async (req, res) => {
 
 const findUserByEmail = async (req) => {
   const { email } = req.body
-  console.log(email)
   const findEmail = await User.findOne({ email: email })
   return findEmail
 }

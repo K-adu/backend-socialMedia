@@ -9,7 +9,7 @@ router = express.Router()
 //create new post of the user logged in
 router.post('/user/post', auth, createPost)
 
-//get all the post from all users
+//get all the post from all users with comments name and likes
 router.get('/posts', auth, getPosts)
 
 //get loggedin user posts

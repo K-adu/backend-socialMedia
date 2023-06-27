@@ -24,13 +24,9 @@ const getPosts = async (req, res) => {
 }
 
 const getUserPosts = async (req, res) => {
-  try {
     console.log(req.user._id)
     const userPosts = await getAuthUserPosts(req, res)
     res.status(200).send(userPosts)
-  } catch (e) {
-    res.status(400).send('failed in controller')
-  }
 }
 
 const getUserPostCounts = async (req, res) => {
