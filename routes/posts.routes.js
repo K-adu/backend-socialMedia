@@ -1,6 +1,7 @@
 const express = require('express')
 const auth = require('../middleware/auth')
 const { createPost, getPosts, getUserPosts,getUserPostCounts } = require('../controller/posts.controller')
+const { getAllPosts } = require('../repository/post.repository')
 
 router = express.Router()
 
@@ -16,6 +17,10 @@ router.get('/myposts/', auth, getUserPosts)
 
 //counting the post of respective users
 router.get('/postcount',getUserPostCounts)
+
+
+//getting all users comments likes
+// router.get('/getAllPostDetails',auth, getAllPostDetailsController)
 
 //update existing post
 // router.patch('')

@@ -40,7 +40,7 @@ const checkExistingUser = async (req, res) => {
       console.log(isMatch)
       if (isMatch) {
         token = await userFound.generateAuthToken()
-        res.render('home', {token: token})
+        res.render('home', { token: token })
       } else {
         res.send({ message: 'Invalid login details' });
       }

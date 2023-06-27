@@ -2,6 +2,24 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+
+// pointSchema
+const pointSchema = new mongoose.Schema({
+    type: {
+        type: String,
+        default: 'Point',
+    },
+    coordinates: {
+        type: [Number],
+        required: true,
+        default: [0, 0],
+        index: '2dsphere',
+    }
+});
+
+
+
+//user Schema
 const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
@@ -24,6 +42,7 @@ const userSchema = new mongoose.Schema({
         required: true,
 
     },
+    location: pointSchema,
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Posts'
@@ -32,10 +51,6 @@ const userSchema = new mongoose.Schema({
         city: { type: String },
         state: { type: String },
         country: { type: String },
-    }],
-    location: [{
-        longitude: { type: Number },
-        latitude: { type: Number },
     }],
     tokens: [{
         token: {

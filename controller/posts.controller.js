@@ -14,12 +14,12 @@ const createPost = async (req, res) => {
 
 
 const getPosts = async (req, res) => {
-  try {
-    const posts = await getAllPosts()
-    res.status(200).send(posts)
-  } catch (e) {
-    res.status(400).send('failed to fetch posts')
-  }
+  // try {
+    const posts = await getAllPosts(req,res)
+   // res.render('posts', {posts: posts})
+  // } catch (e) {
+  //   res.status(400).send('failed to fetch posts')
+  // }
 
 }
 
@@ -34,13 +34,13 @@ const getUserPosts = async (req, res) => {
 }
 
 const getUserPostCounts = async (req, res) => {
-  try{
+  try {
     const totalPostCount = await getUserPostCountsDb()
-    res.render('pages/postcount', {users: totalPostCount})
-  }catch(e){
+    res.render('pages/postcount', { users: totalPostCount })
+  } catch (e) {
     res.status(200).send('failed in the repo code')
   }
-  
+
 
 }
 

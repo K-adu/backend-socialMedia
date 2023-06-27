@@ -1,23 +1,29 @@
 {{!< layouts/main}} <!-- Specify the layout template name -->
 
-
-
     {{> header}} <!-- Include the header partial -->
-    <script type="text/javaScript">
-    let token = "{{token}}"
 
-</script>
+    <script type="text/javascript">
+        let token ="{{token}}"
+        let posts = "{{posts}}";
+    </script>
+
     <section>
         <h1>Welcome to the EBgram</h1>
         <p>Token: {{token}}</p>
 
-        <ul id="list">
-            <li><a href="#">Item 1</a></li>
-            <li><a href="#">Item 2</a></li>
-            <li><a href="#">Item 3</a></li>
-        </ul>
-    </section>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-    <script src="js/script.js"></script>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function saveTokenToLocalStorage(token) {
+            console.log(token)
+            localStorage.setItem('token', token);
+            console.log('workint till here')
+        }
+
+        saveTokenToLocalStorage(token);
+
+    </script>
+
     {{>footer}}
