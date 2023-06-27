@@ -1,6 +1,7 @@
-const {addHobbiesToDb, getHobbiesFromDb} = require('../repository/hobbies.repository')
+import { addHobbiesToDb, getHobbiesFromDb } from '../repository/hobbies.repository.js';
 
-const addHobbies = async (req,res)=>{
+
+export const addHobbies = async (req,res)=>{
     try{
         const userId = req.user._id
         const addUserHobbies = await addHobbiesToDb(req.body, userId)
@@ -13,7 +14,7 @@ const addHobbies = async (req,res)=>{
 }
 
 
-const getHobbies = async (req,res)=>{
+export const getHobbies = async (req,res)=>{
     const userId = req.user._id
     try{
         const hobbies =await getHobbiesFromDb(userId)
@@ -24,9 +25,4 @@ const getHobbies = async (req,res)=>{
     
     
 
-}
-
-module.exports = {
-    addHobbies,
-    getHobbies,
 }

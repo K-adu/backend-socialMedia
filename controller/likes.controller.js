@@ -1,8 +1,7 @@
-const Like = require('../models/likes.models')
-const { likeaPostDb, checkLikePostByUserOnce } = require('../repository/likes.repository')
+import Like from '../models/likes.models.js';
+import { likeaPostDb, checkLikePostByUserOnce } from '../repository/likes.repository.js';
 
-
-const likeaPostController = async (req, res) => {
+export const likeaPostController = async (req, res) => {
     try {
         const postId = req.params.postid
         const userId = req.user._id
@@ -23,10 +22,4 @@ const likeaPostController = async (req, res) => {
     }
 
 
-}
-
-
-
-module.exports = {
-    likeaPostController,
 }

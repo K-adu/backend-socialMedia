@@ -1,8 +1,9 @@
-const express = require('express')
+import express from 'express';
+import {auth} from '../middleware/auth.js';
+import { addHobbies, getHobbies } from '../controller/hobbies.controller.js';
 
-const router = express.Router()
-const auth = require('../middleware/auth')
-const {addHobbies,getHobbies} = require('../controller/hobbies.controller')
+const router = express.Router();
+
 
 // adding new hobbies
 router.post('/hobbies/add',auth,addHobbies)
@@ -12,4 +13,4 @@ router.get('/hobbies',auth,getHobbies)
 
 
 
-module.exports = router
+export default router

@@ -1,7 +1,9 @@
-const express = require('express')
-const auth = require('../middleware/auth')
-const { createComment, getComment } = require('../controller/comments.controller')
-router = express.Router()
+import express from 'express';
+import {auth} from '../middleware/auth.js';
+import { createComment, getComment } from '../controller/comments.controller.js';
+
+const router = express.Router();
+
 
 // create a new comment on the post from the authencicated user
 router.post('/comments/:postid', auth, createComment)
@@ -16,4 +18,4 @@ router.get('/comments/:postid', auth, getComment)
 
 
 
-module.exports = router
+export default router

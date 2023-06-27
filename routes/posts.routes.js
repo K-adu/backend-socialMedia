@@ -1,9 +1,14 @@
-const express = require('express')
-const auth = require('../middleware/auth')
-const { createPost, getPosts, getUserPosts,getUserPostCounts } = require('../controller/posts.controller')
-const { getAllPosts } = require('../repository/post.repository')
+import express from 'express';
+import { auth } from '../middleware/auth.js';
+import {
+    createPost,
+    getPosts,
+    getUserPosts,
+    getUserPostCounts,
+    updatePostController,
+} from '../controller/posts.controller.js';
 
-router = express.Router()
+const router = express.Router()
 
 
 //create new post of the user logged in
@@ -16,14 +21,15 @@ router.get('/posts', auth, getPosts)
 router.get('/myposts/', auth, getUserPosts)
 
 //counting the post of respective users
-router.get('/postcount',getUserPostCounts)
+router.get('/postcount', getUserPostCounts)
 
 
 //getting all users comments likes
 // router.get('/getAllPostDetails',auth, getAllPostDetailsController)
 
-//update existing post
-// router.patch('')
+// update existing post
+router.patch('/post/:id', auth, updatePostController)
 
-module.exports = router
+export default router
 
+//

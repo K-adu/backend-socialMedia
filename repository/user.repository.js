@@ -1,7 +1,8 @@
-const User = require('../models/user.models')
+import User from '../models/user.models.js';
 
 
-const createNewUser = async (req, res) => {
+
+export const createNewUser = async (req, res) => {
   const newUser = new User({
     fullName: req.body.fullName,
     email: req.body.email,
@@ -22,13 +23,13 @@ const createNewUser = async (req, res) => {
 };
 
 
-const findUserByEmail = async (req) => {
+export const findUserByEmail = async (req) => {
   const { email } = req.body
   const findEmail = await User.findOne({ email: email })
   return findEmail
 }
 
-const checkExistingUser = async (req, res) => {
+export const checkExistingUser = async (req, res) => {
   const { email, password } = req.body;
 
   try {
@@ -38,7 +39,7 @@ const checkExistingUser = async (req, res) => {
       const isMatch = await userFound.matchPassword(password);
       console.log(isMatch)
       if (isMatch) {
-        token = await userFound.generateAuthToken()
+        const token = await userFound.generateAuthToken()
         res.render('home', { token: token })
       } else {
         res.send({ message: 'Invalid login details' });
@@ -51,11 +52,3 @@ const checkExistingUser = async (req, res) => {
   }
 };
 
-
-
-
-module.exports = {
-  findUserByEmail,
-  createNewUser,
-  checkExistingUser
-}

@@ -1,6 +1,8 @@
-const jwt = require('jsonwebtoken')
-const User = require('../models/user.models')
-const auth = async (req, res, next) => {
+import jtw from 'jsonwebtoken'
+import User from '../models/user.models.js';
+
+
+export const auth = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '')
         const decoded = jwt.verify(token, 'nikejustdoit')
@@ -16,6 +18,4 @@ const auth = async (req, res, next) => {
         res.status(401).send({ error: 'Please authenticate.' })
     }
 }
-
-module.exports = auth
 

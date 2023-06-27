@@ -1,5 +1,4 @@
-const mongoose = require('mongoose')
-
+import mongoose from 'mongoose'
 
 const hobbiesSchema = new mongoose.Schema({
     name: {
@@ -17,4 +16,4 @@ const hobbiesSchema = new mongoose.Schema({
 const Hobbies = mongoose.model('Hobbies',hobbiesSchema)
 
 
-module.exports = Hobbies
+export default Hobbies

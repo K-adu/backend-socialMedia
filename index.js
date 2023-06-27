@@ -1,18 +1,25 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const path = require('path');
-
+import express from 'express'
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import {setup} from './views.js'
 // database connection
-require('./dbconn');
-const views = require('./views'); // Import the views module
+import './dbconn.js';
+
 
 // routes
-const userRoutes = require('./routes/user.routes');
-const postRoutes = require('./routes/posts.routes');
-const commentRoutes = require('./routes/comments.routes');
-const likeRoutes = require('./routes/likes.routes');
-const hobbiesRoutes = require('./routes/hobbies.routes');
+import userRoutes from './routes/user.routes.js';
+import postRoutes from './routes/posts.routes.js';
+import commentRoutes from './routes/comments.routes.js';
+import likeRoutes from './routes/likes.routes.js';
+import hobbiesRoutes from './routes/hobbies.routes.js';
+
+
+
+//to use the __dirname as usual 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = 3000;
@@ -41,7 +48,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-views.setup(app); // Pass the app object to the setup function in views.js
+setup(app); // Pass the app object to the setup function in views.js
 
 app.listen(PORT, () => {
   console.log(`Server listening on port number ${PORT}`);

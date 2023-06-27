@@ -1,6 +1,7 @@
-const { insertPostsToDb, getAllPosts, getAuthUserPosts, getUserPostCountsDb } = require('../repository/post.repository');
+import { insertPostsToDb, getAllPosts, getAuthUserPosts, getUserPostCountsDb } from '../repository/post.repository.js';
 
-const createPost = async (req, res) => {
+
+export const createPost = async (req, res) => {
   try {
     const { title, image } = req.body;
     console.log(title);
@@ -13,7 +14,7 @@ const createPost = async (req, res) => {
 };
 
 
-const getPosts = async (req, res) => {
+export const getPosts = async (req, res) => {
   // try {
     const posts = await getAllPosts(req,res)
    // res.render('posts', {posts: posts})
@@ -23,13 +24,13 @@ const getPosts = async (req, res) => {
 
 }
 
-const getUserPosts = async (req, res) => {
+export const getUserPosts = async (req, res) => {
     console.log(req.user._id)
     const userPosts = await getAuthUserPosts(req, res)
     res.status(200).send(userPosts)
 }
 
-const getUserPostCounts = async (req, res) => {
+export const getUserPostCounts = async (req, res) => {
   try {
     const totalPostCount = await getUserPostCountsDb()
     res.render('pages/postcount', { users: totalPostCount })
@@ -41,9 +42,8 @@ const getUserPostCounts = async (req, res) => {
 }
 
 
-module.exports = {
-  createPost,
-  getPosts,
-  getUserPosts,
-  getUserPostCounts,
-};
+export const updatePostController = async(req,res)=>{
+
+}
+
+

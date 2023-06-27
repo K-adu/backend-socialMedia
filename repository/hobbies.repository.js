@@ -1,6 +1,6 @@
-const Hobbies = require('../models/hobbies.models');
+import Hobbies from '../models/hobbies.models.js'
 
-const addHobbiesToDb = async (req, userId) => {
+export const addHobbiesToDb = async (req, userId) => {
   const { name, description } = req; // Access the hobby details from the request body
 
   const newHobbies = new Hobbies({
@@ -12,12 +12,7 @@ const addHobbiesToDb = async (req, userId) => {
   await newHobbies.save()
 }
 
-const getHobbiesFromDb = async (userId)=>{
+export const getHobbiesFromDb = async (userId)=>{
     const hobbies = await Hobbies.find({owner: userId})
     return hobbies
-}
-
-module.exports = {
-  addHobbiesToDb,
-  getHobbiesFromDb,
 }

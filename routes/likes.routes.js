@@ -1,7 +1,8 @@
-const express = require('express')
-const auth = require('../middleware/auth')
-const { likeaPostController } = require('../controller/likes.controller')
-router = express.Router()
+import express from 'express';
+import {auth} from '../middleware/auth.js';
+import { likeaPostController } from '../controller/likes.controller.js';
+
+const router = express.Router()
 
 
 // post likes
@@ -9,5 +10,5 @@ router.post('/post/like/:postid', auth, likeaPostController)
 
 
 
-module.exports = router
+export default router
 //get likes

@@ -1,8 +1,9 @@
-const Posts = require('../models/posts.models');
-const User = require('../models/user.models')
-const mongoose = require('mongoose')
+import Posts from '../models/posts.models.js';
+import User from '../models/user.models.js';
+import mongoose from 'mongoose';
 
-const insertPostsToDb = async (title, image, req) => {
+
+export const insertPostsToDb = async (title, image, req) => {
   console.log(req.user._id);
   const newPost = new Posts({
     title: title,
@@ -16,7 +17,7 @@ const insertPostsToDb = async (title, image, req) => {
 };
 
 
-const getAllPosts = async (req, res) => {
+export const getAllPosts = async (req, res) => {
   // const posts = await Posts.find().populate('owner', 'fullName')
 
   const posts = await Posts.aggregate([
@@ -62,7 +63,7 @@ const getAllPosts = async (req, res) => {
   res.status(200).send(posts)
 }
 
-const getAuthUserPosts = async (req, res) => {
+export const getAuthUserPosts = async (req, res) => {
   const userId = req.user._id; // Assuming the logged-in user ID is available in req.user._id
 
   const authUserPosts = await Posts.aggregate([
@@ -79,9 +80,9 @@ const getAuthUserPosts = async (req, res) => {
         as: 'ownerDetails'
       }
     },
-    {
-      $unwind: '$ownerDetails'
-    },
+    // {
+    //   $unwind: '$ownerDetails'
+    // },
     {
       $lookup: {
         from: 'comments',
@@ -114,7 +115,7 @@ const getAuthUserPosts = async (req, res) => {
 }
 
 
-const getUserPostCountsDb = async () => {
+export const getUserPostCountsDb = async () => {
   try {
     const usersWithPostCount = await User.aggregate([
       {
@@ -143,10 +144,3 @@ const getUserPostCountsDb = async () => {
 }
 
 
-
-module.exports = {
-  insertPostsToDb,
-  getAllPosts,
-  getAuthUserPosts,
-  getUserPostCountsDb,
-};

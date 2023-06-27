@@ -1,7 +1,8 @@
-const { addCommentToDb, getCommentsRepository } = require('../repository/comments.repository')
+
+import { addCommentToDb, getCommentsRepository } from '../repository/comments.repository.js';
 
 
-const createComment = async (req, res) => {
+export const createComment = async (req, res) => {
     try {
         const { title } = req.body
         const user = req.user._id
@@ -20,7 +21,7 @@ const createComment = async (req, res) => {
 
 }
 
-const getComment = async (req, res) => {
+export const getComment = async (req, res) => {
     try {
         const postId = req.params.postid
         const getAllComments = await getCommentsRepository(postId)
@@ -29,9 +30,4 @@ const getComment = async (req, res) => {
         res.status(400).send('failed at db or controller level')
     }
 
-}
-
-module.exports = {
-    createComment,
-    getComment,
 }

@@ -1,8 +1,9 @@
-const signUpValidator = require('../handlers/joi.handler')
-const { findUserByEmail, createNewUser, checkExistingUser } = require('../repository/user.repository')
+import { findUserByEmail, createNewUser, checkExistingUser } from '../repository/user.repository.js';
+
+import {signUpValidator} from '../handlers/joi.handler.js';
 
 
-const signUpController = async (req, res) => {
+export const signUpController = async (req, res) => {
     const checkFields = signUpValidator(req, res)
     const checkEmailExists = await findUserByEmail(req)
     if (checkFields) {
@@ -19,12 +20,7 @@ const signUpController = async (req, res) => {
 
 
 
-const loginController = async (req, res) => {
+export const loginController = async (req, res) => {
     checkExistingUser(req, res)
 
-}
-
-module.exports = {
-    signUpController,
-    loginController,
 }

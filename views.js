@@ -1,7 +1,10 @@
-const hbs = require('hbs');
-const path = require('path')
+import hbs from 'hbs'
+import path from 'path'
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 // Setup function to set the view engine and views directory
-function setup(app) {
+export function setup(app) {
 
 
   app.set('view engine', 'hbs');
@@ -18,10 +21,9 @@ function setup(app) {
 
 
   hbs.registerPartials(path.join(__dirname, 'views/partials'));
-  hbs.rei
   // Define homepage route
   app.get('/', (req, res) => {
-    res.render('home');
+    res.render('welcome');
   });
 
   //login page
@@ -40,7 +42,5 @@ function setup(app) {
 
 
 }
-
-module.exports = { setup }; // Export the setup function
 
 

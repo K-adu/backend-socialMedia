@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const likesSchema = new mongoose.Schema({
     count: {
@@ -21,4 +21,4 @@ likesSchema.index({ post: 1, users: 1 }, { unique: true });
 
 const Like = mongoose.model('Like', likesSchema);
 
-module.exports = Like;
+export default Like

@@ -1,6 +1,6 @@
-const Joi = require('joi');
+import Joi from 'joi'
 
-const signUpValidator = async (req, res) => {
+export const signUpValidator = async (req, res) => {
 
     try {
         const { name, email, password } = req.body
@@ -19,4 +19,3 @@ const signUpValidator = async (req, res) => {
 
 };
 
-module.exports = signUpValidator
