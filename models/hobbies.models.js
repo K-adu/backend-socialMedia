@@ -11,7 +11,7 @@ const hobbiesSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }
-}, {timeStamp: true,})
+}, {timeStamps: true,})
 
 const Hobbies = mongoose.model('Hobbies',hobbiesSchema)
 

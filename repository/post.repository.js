@@ -59,9 +59,10 @@ export const getAllPosts = async () => {
 
   const posts = await Posts.aggregate([
     {
-      // matching user and posts using the id field of user and owner field of post
       $lookup: {
         from: 'users',
+        // localField: 'owner',
+        // foreignField: '_id',
         let: { ownerId: '$owner' },
         pipeline: [
           {
@@ -77,9 +78,13 @@ export const getAllPosts = async () => {
               email: 1,
             },
           },
+          {
+            $unwind: '$user'
+          },
         ],
         as: 'user',
       },
+
     },
     {
       $lookup: {
@@ -106,6 +111,9 @@ export const getAllPosts = async () => {
               title: 1,
               'commentUsers.fullName': 1,
             },
+          },
+          {
+            $unwind: '$commentUsers'
           },
         ],
         as: 'comments',
@@ -137,6 +145,9 @@ export const getAllPosts = async () => {
               'likeUsers.fullName': 1,
             },
           },
+          {
+            $unwind: '$likeUsers'
+          },
         ],
         as: 'likes',
       },
@@ -152,7 +163,8 @@ export const getAllPosts = async () => {
         'likes.likeUsers.fullName': 1,
       },
     },
-  ]);
+  ]
+  );
 
   return posts
 }
@@ -342,3 +354,13 @@ export const getUserPostCountsDb = async () => {
 }
 
 
+export const updatePostIntoDb = async (data, postId, userId, updates) => {
+  console.log(data)
+  console.log(updates)
+  console.log(postId)
+  console.log(userId)
+  const post = await Posts.findOne({ _id: postId, owner: userId })
+  console.log(post)
+  updates.forEach((update) => post[update] = data[update])
+  await post.save()
+}
