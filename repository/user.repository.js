@@ -3,12 +3,11 @@ import User from '../models/user.models.js';
 
 //creating new user and hasigin password before inserting it to the db
 export const createNewUser = async (data) => {
-  const newUser = new User(date);
-  newUser.password = await newUser.hashpassword(data.password);
-  await User.create(newUser).then(() => {
-    return res.render('login')
-  });
+  const newUser = new User(data);
 
+  newUser.password = await newUser.hashpassword(data.password);
+  const userCreated = await User.create(newUser)
+  return userCreated
 };
 
 
@@ -19,24 +18,16 @@ export const findUserByEmail = async (data) => {
 }
 
 export const checkMatchingEmailPassword = async (data) => {
-  
-  try {
-    const userFound = await User.findOne({ email: data.email })
-    console.log(password)
-    if (userFound) {
-      const isMatch = await userFound.matchPassword(password);
-      console.log(isMatch)
-      if (isMatch) {
-        const token = await userFound.generateAuthToken()
-        res.render('home', { token: token })
-      } else {
-        res.send({ message: 'Invalid login details' });
-      }
+  const userFound = await findUserByEmail(data.email)
+  if (userFound) {
+    const isMatch = await userFound.matchPassword(data.password);
+    if (isMatch) {
+      const token = await userFound.generateAuthToken()
+      return true
     } else {
-      res.send({ message: 'User not found' });
+      return false
     }
-  } catch (e) {
-    console.log(e)
   }
-};
+
+}
 

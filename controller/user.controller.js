@@ -1,10 +1,10 @@
 import { findUserByEmail, createNewUser, checkMatchingEmailPassword } from '../repository/user.repository.js';
 
-import {signUpValidator} from '../handlers/joi.handler.js';
+import { signUpValidator } from '../handlers/joi.handler.js';
 
 
 export const signUpController = async (req, res) => {
-    data ={
+    const data = {
         fullName: req.body.fullName,
         email: req.body.email,
         password: req.body.password,
@@ -12,6 +12,7 @@ export const signUpController = async (req, res) => {
         address: req.body.address,
         location: req.body.location
     }
+    console.log(data.password)
     const checkFields = signUpValidator(req, res)
 
     const checkEmailExists = await findUserByEmail(data.email)
@@ -19,7 +20,8 @@ export const signUpController = async (req, res) => {
         if (checkEmailExists) {
             return res.status(400).send('Email already Exist')
         } else {
-            await createNewUser(req, res)
+            const userCreated = await createNewUser(data)
+            res.status(200).send(userCreated)
         }
 
     } else {
@@ -34,6 +36,11 @@ export const loginController = async (req, res) => {
         email: req.body.email,
         password: req.body.password
     }
-    checkMatchingEmailPassword(data)
+    const loginStatus = await checkMatchingEmailPassword(data)
+    if(loginStatus){
+        res.status(200).send('loggin success')
+    }else{
+        res.status(400).send('login failed')
+    }
 
 }

@@ -59,6 +59,7 @@ export const getAllPosts = async () => {
 
   const posts = await Posts.aggregate([
     {
+      // matching user and posts using the id field of user and owner field of post
       $lookup: {
         from: 'users',
         let: { ownerId: '$owner' },
