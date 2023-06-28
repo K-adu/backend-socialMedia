@@ -81,6 +81,9 @@ export const getAllPosts = async () => {
         as: 'user',
       },
     },
+    {
+      $unwind: '$user'
+    },
 
 
 
@@ -358,13 +361,9 @@ export const getUserPostCountsDb = async () => {
 }
 
 
-export const updatePostIntoDb = async (data, postId, userId, updates) => {
-  console.log(data)
-  console.log(updates)
-  console.log(postId)
-  console.log(userId)
-  const post = await Posts.findOne({ _id: postId, owner: userId })
-  console.log(post)
-  updates.forEach((update) => post[update] = data[update])
+export const updatePostIntoDb = async (data) => {
+  const post = await Posts.findOneAndUpdate({ _id: data.postId, owner: data.userId },{$set: {
+    title: data.title,
+  }})
   await post.save()
 }

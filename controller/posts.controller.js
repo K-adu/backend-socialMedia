@@ -3,8 +3,8 @@ import { insertPostsToDb, getAllPosts, getAuthUserPosts, getUserPostCountsDb, up
 
 export const createPost = async (req, res) => {
   try {
-    const { title, image } = req.body;
-    const owner = req.user._idid
+    const { title } = req.body;
+    const owner = req.user._id
     const data = {
       title,
       owner
@@ -46,6 +46,8 @@ export const updatePostController = async (req, res) => {
   const data = {
     title: req.body.title,
     image: req.body.image,
+    postId: postId,
+    userId: userId
   }
   const updates = Object.keys(data)
   const allowedUpdates = ['title', 'image']
@@ -54,7 +56,7 @@ export const updatePostController = async (req, res) => {
   if (!isValidOperation) {
        res.status(400).send({ error: 'Invalid updates!' })
   }else{
-    await updatePostIntoDb(data,postId,userId,updates)
+    await updatePostIntoDb(data)
     res.status(200).send('product updateed successfully')
   }
 }

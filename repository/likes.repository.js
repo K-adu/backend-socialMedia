@@ -15,6 +15,8 @@ export const likeaPostDb = async (postId, userId) => {
 
 
 export const checkLikePostByUserOnce = async (postId, userId) => {
+    console.log(postId)
+    console.log(userId)
     const post = await Like.findOne({ post: postId })
     console.log(post)
     return post
