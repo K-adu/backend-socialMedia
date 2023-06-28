@@ -6,10 +6,10 @@ const postsSchema = new mongoose.Schema({
         required: true,
 
     },
-    image: {
-        public_id: String,
-        url: String
-    },
+    // image: {
+    //     public_id: String,
+    //     url: String
+    // },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

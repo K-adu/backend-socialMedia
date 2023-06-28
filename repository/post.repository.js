@@ -4,9 +4,10 @@ import mongoose from 'mongoose';
 
 
 export const insertPostsToDb = async (data) => {
+  console.log(data)
   const newPost = new Posts(data);
   await newPost.save();
-  await User.findOneAndUpdate({ _id: data.ownerId }, {
+  await User.findOneAndUpdate({ _id: data.owner  }, {
     $push: { posts: newPost._id }
   })
 };
@@ -61,8 +62,6 @@ export const getAllPosts = async () => {
     {
       $lookup: {
         from: 'users',
-        // localField: 'owner',
-        // foreignField: '_id',
         let: { ownerId: '$owner' },
         pipeline: [
           {
@@ -78,14 +77,13 @@ export const getAllPosts = async () => {
               email: 1,
             },
           },
-          {
-            $unwind: '$user'
-          },
         ],
         as: 'user',
       },
-
     },
+
+
+
     {
       $lookup: {
         from: 'comments',
@@ -168,6 +166,12 @@ export const getAllPosts = async () => {
 
   return posts
 }
+
+
+
+
+
+
 
 export const getAuthUserPosts = async (userId) => {
 

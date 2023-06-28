@@ -4,12 +4,10 @@ import { insertPostsToDb, getAllPosts, getAuthUserPosts, getUserPostCountsDb, up
 export const createPost = async (req, res) => {
   try {
     const { title, image } = req.body;
-    const ownerId = req.user.id
+    const owner = req.user._idid
     const data = {
       title,
-      image,
-      ownerId
-
+      owner
     }
     await insertPostsToDb(data);
     res.status(200).send('Post added successfully');
