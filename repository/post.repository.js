@@ -7,6 +7,12 @@ import Like from '../models/likes.models.js'
 import mongoose from 'mongoose';
 
 
+
+
+
+// const myAggregate = Posts.aggregate();
+
+
 export const insertPostsToDb = async (data) => {
   console.log(data)
   const newPost = new Posts(data);
@@ -22,7 +28,7 @@ export const insertPostsToDb = async (data) => {
 export const getAllPosts = async () => {
 
 
-  const posts = await Posts.aggregate([
+  const posts =  Posts.aggregate([
     {
       $lookup: {
         from: 'users',
@@ -130,8 +136,13 @@ export const getAllPosts = async () => {
     },
   ]
   );
-
-  return posts
+  const options = {
+    page: 1,
+    limit: 2,
+  };
+  const paginatedPosts =  await Posts
+    .aggregatePaginate(posts, options)
+  return paginatedPosts
 }
 
 
