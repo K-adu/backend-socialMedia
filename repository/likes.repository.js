@@ -1,4 +1,5 @@
 import Like from '../models/likes.models.js';
+import Posts from '../models/posts.models.js';
 
 
 
@@ -9,6 +10,9 @@ export const likeaPostDb = async (postId, userId) => {
         $set: { post: postId }
     },
         { upsert: true });
+    await Posts.findOneAndUpdate({_id: postId},{
+        $inc: {likesCount: 1}
+    })
 
 
 }

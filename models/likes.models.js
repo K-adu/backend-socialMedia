@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 const likesSchema = new mongoose.Schema({
     count: {
         type: Number,
-        default: 0 // Initialize count to 0
+        default: 0
     },
     users: [{
         type: mongoose.Schema.Types.ObjectId,

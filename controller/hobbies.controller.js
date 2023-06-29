@@ -1,4 +1,8 @@
-import { addHobbiesToDb, getHobbiesFromDb } from '../repository/hobbies.repository.js';
+import {
+    addHobbiesToDb,
+    getHobbiesFromDb,
+    updateHobbiesInDb
+} from '../repository/hobbies.repository.js';
 
 
 export const addHobbies = async (req, res) => {
@@ -31,4 +35,16 @@ export const getHobbies = async (req, res) => {
 
 
 
+}
+
+export const updateHobbiesController = async (req, res) => {
+    const userId = req.user._id
+    const hobbiesId = req.params.id
+    const data = {
+        name: req.body.name,
+        userId: userId,
+        hobbiesId: hobbiesId
+    }
+    await updateHobbiesInDb(data)
+    res.status(200).send('hobbies updated success')
 }

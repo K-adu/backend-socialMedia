@@ -12,54 +12,14 @@ export const insertPostsToDb = async (data) => {
   const newPost = new Posts(data);
   await newPost.save();
   await User.findOneAndUpdate({ _id: data.owner }, {
-    $push: { posts: newPost._id }
-  })
+    $push: { posts: newPost._id },
+    $inc: {postCount: 1}
+  },
+)
 };
 
 
 export const getAllPosts = async () => {
-  // const posts = await Posts.find().populate('owner', 'fullName')
-
-  // const posts = await Posts.aggregate([
-  //   {
-  //     $lookup: {
-  //       from: 'users',
-  //       localField: 'owner',
-  //       foreignField: '_id',
-  //       as: 'ownerDetails'
-  //     }
-  //   },
-  //   // {
-  //   //   $unwind: '$ownerDetails'
-  //   // },
-  //   {
-  //     $lookup: {
-  //       from: 'comments',
-  //       localField: '_id',
-  //       foreignField: 'post',
-  //       as: 'comments'
-  //     }
-  //   },
-  //   {
-  //     $lookup: {
-  //       from: 'likes',
-  //       localField: '_id',
-  //       foreignField: 'post',
-  //       as: 'likes'
-  //     }
-  //   },
-  //   {
-  //     $project: {
-  //       _id: 1,
-  //       title: 1,
-  //       image: 1,
-  //       owner: '$ownerDetails.fullName',
-  //       comments: 1,
-  //       likeCount: { $size: '$likes.users' }
-  //     }
-  //   }
-  // ])
-
 
 
   const posts = await Posts.aggregate([
@@ -285,53 +245,6 @@ export const getAuthUserPosts = async (userId) => {
 
   return posts
 }
-
-
-
-
-
-
-// const authUserPosts = await Posts.aggregate([
-
-//   {
-//     $lookup: {
-//       from: 'users',
-//       localField: 'owner',
-//       foreignField: '_id',
-//       as: 'ownerDetails'
-//     }
-//   },
-//   // {
-//   //   $unwind: '$ownerDetails'
-//   // },
-//   {
-//     $lookup: {
-//       from: 'comments',
-//       localField: '_id',
-//       foreignField: 'post',
-//       as: 'comments'
-//     }
-//   },
-//   {
-//     $lookup: {
-//       from: 'likes',
-//       localField: '_id',
-//       foreignField: 'post',
-//       as: 'likes'
-//     }
-//   },
-//   {
-//     $project: {
-//       _id: 1,
-//       title: 1,
-//       image: 1,
-//       owner: '$ownerDetails.fullName',
-//       comments: 1,
-//       likeCount: { $size: '$likes.users' }
-//     }
-//   }
-// ])
-// console.log(authUserPosts)
 
 
 

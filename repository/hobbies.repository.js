@@ -11,3 +11,14 @@ export const getHobbiesFromDb = async (userId) => {
   const hobbies = await Hobbies.find({ owner: userId })
   return hobbies
 }
+
+
+export const updateHobbiesInDb = async(data)=>{
+  await Hobbies.findOneAndUpdate({
+    _id: data.hobbiesId, owner: data.userId
+  },{
+    $set: {
+      name : data.name
+    }
+  })
+}

@@ -24,15 +24,10 @@ router.get('/myposts/', auth, getUserPosts)
 //counting the post of respective users
 router.get('/postcount', getUserPostCounts)
 
-
 // update existing post
 router.patch('/post/:id', auth, updatePostController)
-
-
 
 //delete all the post comments and likes of the respective posts
 router.delete('/delete/:id', auth, deletePostController)
 
 export default router
-
-//

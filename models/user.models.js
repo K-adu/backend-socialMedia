@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
         required: true,
+        default: null,
 
     },
     email: {
@@ -39,6 +40,7 @@ const userSchema = new mongoose.Schema({
     age: {
         type: Number,
         required: true,
+        default: null,
 
     },
     location: pointSchema,
@@ -46,10 +48,14 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Posts'
     }],
+    postCount: {
+        type: Number,
+        default: 0
+    },
     address: [{
-        city: { type: String },
-        state: { type: String },
-        country: { type: String },
+        city: { type: String, default: null },
+        state: { type: String, default: null },
+        country: { type: String, default: null },
     }],
     tokens: [{
         token: {

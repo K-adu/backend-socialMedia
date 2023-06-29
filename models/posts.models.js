@@ -6,10 +6,14 @@ const postsSchema = new mongoose.Schema({
         required: true,
 
     },
-    // image: {
-    //     public_id: String,
-    //     url: String
-    // },
+    commentsCount: {
+        type: Number,
+        default: 0,
+    },
+    likesCount: {
+        type: Number,
+        default: 0,
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
