@@ -4,7 +4,7 @@ import {
     updateHobbiesInDb
 } from '../repository/hobbies.repository.js';
 
-
+//adding hobbies
 export const addHobbies = async (req, res) => {
     const userId = req.user._id
     try {
@@ -13,17 +13,15 @@ export const addHobbies = async (req, res) => {
             description: req.body.description,
             owner: userId,
         }
-
         await addHobbiesToDb(data, userId)
         res.status(200).send('hobbies added success')
-
     } catch (e) {
         res.status(400).send('cannot add hobbies to the user')
     }
 
 }
 
-
+//getting hobbies
 export const getHobbies = async (req, res) => {
     const userId = req.user._id
     try {
@@ -36,7 +34,7 @@ export const getHobbies = async (req, res) => {
 
 
 }
-
+//updating hobbies for the respectiuve user
 export const updateHobbiesController = async (req, res) => {
     const userId = req.user._id
     const hobbiesId = req.params.id

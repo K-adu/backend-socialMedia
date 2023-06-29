@@ -11,18 +11,20 @@ export const createNewUser = async (data) => {
 }
 
 
-
+//finding checking if the email exists or not
 export const findUserByEmail = async (data) => {
   const findEmail = await User.findOne({ email: data })
   return findEmail
 }
 
+
+//checking password if the email exists and generating token
 export const checkMatchingEmailPassword = async (data) => {
   const userFound = await findUserByEmail(data.email)
   if (userFound) {
     const isMatch = await userFound.matchPassword(data.password)
     if (isMatch) {
-      const token = await userFound.generateAuthToken()
+      await userFound.generateAuthToken()
       return true
     } else {
       return false
@@ -31,6 +33,7 @@ export const checkMatchingEmailPassword = async (data) => {
 
 }
 
+//removing all tokens from the database causing the user to logout
 export const removeTokenFromDb = async (userId) => {
   await User.findOneAndUpdate({ _id: userId }, {
     $set: {
@@ -39,6 +42,7 @@ export const removeTokenFromDb = async (userId) => {
   })
 }
 
+//getting details of the loggedin user
 export const getUserDetailsDb = async (userId) => {
   try {
     const userDetails = await User.find({ _id: userId },
@@ -47,7 +51,7 @@ export const getUserDetailsDb = async (userId) => {
         tokens: 0,
         _id: 0,
         posts: 0,
-        
+
       })
     return userDetails
   } catch (e) {

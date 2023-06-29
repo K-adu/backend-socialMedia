@@ -1,6 +1,6 @@
 import Posts from '../models/posts.models.js';
 import User from '../models/user.models.js';
-import Comments from  '../models/comments.models.js'
+import Comments from '../models/comments.models.js'
 import Like from '../models/likes.models.js'
 
 
@@ -13,12 +13,12 @@ export const insertPostsToDb = async (data) => {
   await newPost.save();
   await User.findOneAndUpdate({ _id: data.owner }, {
     $push: { posts: newPost._id },
-    $inc: {postCount: 1}
+    $inc: { postCount: 1 }
   },
-)
+  )
 };
 
-
+//getting all user post like and all
 export const getAllPosts = async () => {
 
 
@@ -135,11 +135,7 @@ export const getAllPosts = async () => {
 }
 
 
-
-
-
-
-
+//getting auth user post comments and like details
 export const getAuthUserPosts = async (userId) => {
 
   const posts = await Posts.aggregate([
@@ -171,6 +167,12 @@ export const getAuthUserPosts = async (userId) => {
       },
     },
     {
+      $unwind: '$user'
+    },
+
+
+
+    {
       $lookup: {
         from: 'comments',
         let: { postId: '$_id' },
@@ -195,6 +197,9 @@ export const getAuthUserPosts = async (userId) => {
               title: 1,
               'commentUsers.fullName': 1,
             },
+          },
+          {
+            $unwind: '$commentUsers'
           },
         ],
         as: 'comments',
@@ -226,6 +231,9 @@ export const getAuthUserPosts = async (userId) => {
               'likeUsers.fullName': 1,
             },
           },
+          {
+            $unwind: '$likeUsers'
+          },
         ],
         as: 'likes',
       },
@@ -248,7 +256,7 @@ export const getAuthUserPosts = async (userId) => {
 
 
 
-
+//getting all users no of post counts
 export const getUserPostCountsDb = async () => {
   try {
     const usersWithPostCount = await User.aggregate([
@@ -277,7 +285,7 @@ export const getUserPostCountsDb = async () => {
   }
 }
 
-
+//updating posst of loggedin user
 export const updatePostIntoDb = async (data) => {
   const post = await Posts.findOneAndUpdate({ _id: data.postId, owner: data.userId }, {
     $set: {
@@ -287,26 +295,26 @@ export const updatePostIntoDb = async (data) => {
   await post.save()
 }
 
-
-export const deletePostDb = async (postId,userId) => {
-    try {
-      // check if the logged-in user is the owner
-      const post = await Posts.findOne({ _id: postId, owner: userId });
-      if (!post) {
-        throw new Error('Post not found or unauthorized access');
-      }
-  
-      // Delete the post
-      await post.deleteOne();
-  
-      // deleting all the commenst of the psot
-      await Comments.deleteMany({ post: postId });
-  
-      // deleting the likes accociutaed with the posts
-      await Like.deleteMany({ post: postId });
-  
-      console.log('Post, comments, and likes deleted successfully');
-    } catch (error) {
-      console.error('Error deleting post:', error.message);
+//deleting user post
+export const deletePostDb = async (postId, userId) => {
+  try {
+    // check if the logged-in user is the owner
+    const post = await Posts.findOne({ _id: postId, owner: userId });
+    if (!post) {
+      throw new Error('Post not found or unauthorized access');
     }
+
+    // Delete the post
+    await post.deleteOne();
+
+    // deleting all the commenst of the psot
+    await Comments.deleteMany({ post: postId });
+
+    // deleting the likes accociutaed with the posts
+    await Like.deleteMany({ post: postId });
+
+    console.log('Post, comments, and likes deleted successfully');
+  } catch (error) {
+    console.error('Error deleting post:', error.message);
   }
+}

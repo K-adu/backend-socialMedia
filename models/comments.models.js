@@ -3,6 +3,7 @@ const commentsSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
+        default: null,
 
     },
     user: {
