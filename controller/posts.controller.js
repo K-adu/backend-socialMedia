@@ -1,4 +1,11 @@
-import { insertPostsToDb, getAllPosts, getAuthUserPosts, getUserPostCountsDb, updatePostIntoDb } from '../repository/post.repository.js';
+import { 
+  insertPostsToDb, 
+  getAllPosts, 
+  getAuthUserPosts, 
+  getUserPostCountsDb, 
+  updatePostIntoDb,
+  deletePostDb
+ } from '../repository/post.repository.js';
 
 
 export const createPost = async (req, res) => {
@@ -49,16 +56,17 @@ export const updatePostController = async (req, res) => {
     postId: postId,
     userId: userId
   }
-  const updates = Object.keys(data)
-  const allowedUpdates = ['title', 'image']
-
-  const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
-  if (!isValidOperation) {
-       res.status(400).send({ error: 'Invalid updates!' })
-  }else{
     await updatePostIntoDb(data)
     res.status(200).send('product updateed successfully')
   }
-}
 
 
+  export const deletePostController = async (req,res) =>{
+    // await deletePostCommentsLikesDb(data)
+    const postId = req.params.id
+    const userId = req.user._id
+    console.log(userId)
+    console.log(postId)
+    await deletePostDb(postId,userId)
+    res.status(400).send('deleted successfully')
+  }

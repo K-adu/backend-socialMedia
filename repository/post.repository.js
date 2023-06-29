@@ -1,5 +1,9 @@
 import Posts from '../models/posts.models.js';
 import User from '../models/user.models.js';
+import Comments from  '../models/comments.models.js'
+import Like from '../models/likes.models.js'
+
+
 import mongoose from 'mongoose';
 
 
@@ -7,7 +11,7 @@ export const insertPostsToDb = async (data) => {
   console.log(data)
   const newPost = new Posts(data);
   await newPost.save();
-  await User.findOneAndUpdate({ _id: data.owner  }, {
+  await User.findOneAndUpdate({ _id: data.owner }, {
     $push: { posts: newPost._id }
   })
 };
@@ -362,8 +366,34 @@ export const getUserPostCountsDb = async () => {
 
 
 export const updatePostIntoDb = async (data) => {
-  const post = await Posts.findOneAndUpdate({ _id: data.postId, owner: data.userId },{$set: {
-    title: data.title,
-  }})
+  const post = await Posts.findOneAndUpdate({ _id: data.postId, owner: data.userId }, {
+    $set: {
+      title: data.title,
+    }
+  })
   await post.save()
 }
+
+
+export const deletePostDb = async (postId,userId) => {
+    try {
+      // check if the logged-in user is the owner
+      const post = await Posts.findOne({ _id: postId, owner: userId });
+      if (!post) {
+        throw new Error('Post not found or unauthorized access');
+      }
+  
+      // Delete the post
+      await post.deleteOne();
+  
+      // deleting all the commenst of the psot
+      await Comments.deleteMany({ post: postId });
+  
+      // deleting the likes accociutaed with the posts
+      await Like.deleteMany({ post: postId });
+  
+      console.log('Post, comments, and likes deleted successfully');
+    } catch (error) {
+      console.error('Error deleting post:', error.message);
+    }
+  }
