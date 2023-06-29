@@ -1,6 +1,12 @@
-import { findUserByEmail, createNewUser, checkMatchingEmailPassword } from '../repository/user.repository.js';
+import {
+    findUserByEmail,
+    createNewUser,
+    checkMatchingEmailPassword,
+    removeTokenFromDb,
+    getUserDetailsDb
+} from '../repository/user.repository.js'
 
-import { signUpValidator } from '../handlers/joi.handler.js';
+import { signUpValidator } from '../handlers/joi.handler.js'
 
 
 export const signUpController = async (req, res) => {
@@ -37,10 +43,26 @@ export const loginController = async (req, res) => {
         password: req.body.password
     }
     const loginStatus = await checkMatchingEmailPassword(data)
-    if(loginStatus){
+    if (loginStatus) {
         res.status(200).send('loggin success')
-    }else{
+    } else {
         res.status(400).send('login failed')
     }
 
+}
+
+
+export const logoutController = async (req, res) => {
+    const userId = req.user.id
+    await removeTokenFromDb(userId).then(() => {
+        res.status(200).send('logout success')
+    }).catch((e) => {
+        res.status(400).send('loffingout failed')
+    })
+}
+
+export const authUserDetailsController = async (req, res) => {
+    const userId = req.user.id
+    const userDetails =  await getUserDetailsDb(userId)
+    res.status(200).send(userDetails)
 }
