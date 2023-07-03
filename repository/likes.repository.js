@@ -26,3 +26,8 @@ export const checkLikePostByUserOnce = async (postId, userId) => {
     return post
 
 }
+
+
+export const likeNotificationDb = async (postLike,userId)=>{
+
+}

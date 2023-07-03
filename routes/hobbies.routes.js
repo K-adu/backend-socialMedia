@@ -3,7 +3,7 @@ import { auth } from '../middleware/auth.js';
 import {
     addHobbies,
     getHobbies,
-    updateHobbiesController
+    getSimilarHobbiesUserController,
 } from '../controller/hobbies.controller.js';
 
 const router = express.Router();
@@ -16,6 +16,9 @@ router.post('/hobbies/add', auth, addHobbies)
 router.get('/hobbies', auth, getHobbies)
 
 //updating user hobbies
-router.patch('/hobbies/:id', auth, updateHobbiesController)
+// router.patch('/hobbies/:id', auth, updateHobbiesController)
+
+// getting all users with similar hobbies
+router.post('/hobbies/users',auth, getSimilarHobbiesUserController)
 
 export default router

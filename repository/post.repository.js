@@ -314,6 +314,10 @@ export const deletePostDb = async (postId, userId) => {
     if (!post) {
       throw new Error('Post not found or unauthorized access');
     }
+    //decreasing the user count 
+    await User.findOneAndUpdate({ _id: userId }, {
+      $inc: { postCount: -1 }
+    }),
 
     // Delete the post
     await post.deleteOne();
@@ -335,8 +339,9 @@ export const deletePostDb = async (postId, userId) => {
 
 //searching for posts
 export const searchPostDb = async (keyword)=>{
-  const posts = Posts.find({$text:{
-    $search: keyword 
-  }})
-  return posts
+  const posts = Posts.find(
+    { $text: { $search: keyword} },
+    { score: { $meta: "textScore" } }
+ ).sort( { score: { $meta: "textScore" } } )
+ return posts
 }

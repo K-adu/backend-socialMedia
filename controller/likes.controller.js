@@ -1,5 +1,9 @@
 import Like from '../models/likes.models.js';
-import { likeaPostDb, checkLikePostByUserOnce } from '../repository/likes.repository.js';
+import {
+    likeaPostDb,
+    checkLikePostByUserOnce,
+    likeNotificationDb,
+} from '../repository/likes.repository.js';
 
 export const likeaPostController = async (req, res) => {
     try {
@@ -22,4 +26,12 @@ export const likeaPostController = async (req, res) => {
     }
 
 
+}
+
+
+export const likeNotificationController = async (req, res) => {
+    const postLike = req.body.postLike
+    const userId = req.user._id
+    const likePosts = await likeNotificationDb(postLike,userId)
+    res.send(likePosts)
 }

@@ -69,6 +69,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Posts'
     }],
+    hobbies: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Hobbies'
+    }],
     postCount: {
         type: Number,
         default: 0

@@ -1,22 +1,21 @@
 import {
     addHobbiesToDb,
     getHobbiesFromDb,
-    updateHobbiesInDb
+    getSimilarHobbiesUserRepo
 } from '../repository/hobbies.repository.js';
 
 //adding hobbies
 export const addHobbies = async (req, res) => {
-    const userId = req.user._id
     try {
+        const userId = req.user._id
+        console.log(userId)
         const data = {
             name: req.body.name,
-            description: req.body.description,
-            owner: userId,
         }
         await addHobbiesToDb(data, userId)
         res.status(200).send('hobbies added success')
     } catch (e) {
-        res.status(400).send('cannot add hobbies to the user')
+        res.status(400).send(e)
     }
 
 }
@@ -34,15 +33,12 @@ export const getHobbies = async (req, res) => {
 
 
 }
-//updating hobbies for the respectiuve user
-export const updateHobbiesController = async (req, res) => {
-    const userId = req.user._id
-    const hobbiesId = req.params.id
-    const data = {
-        name: req.body.name,
-        userId: userId,
-        hobbiesId: hobbiesId
-    }
-    await updateHobbiesInDb(data)
-    res.status(200).send('hobbies updated success')
+
+
+
+export const getSimilarHobbiesUserController = async (req, res) => {
+
+    const name = req.body.name
+    const users = await getSimilarHobbiesUserRepo(name)
+    res.send(users)
 }
