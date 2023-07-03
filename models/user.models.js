@@ -64,6 +64,10 @@ const userSchema = new mongoose.Schema({
         default: null,
 
     },
+    status: {
+        type: Boolean,
+        default: true
+    },
     location: pointSchema,
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
