@@ -4,7 +4,8 @@ import {
   getAuthUserPosts, 
   getUserPostCountsDb, 
   updatePostIntoDb,
-  deletePostDb
+  deletePostDb,
+  searchPostDb
  } from '../repository/post.repository.js';
 
 
@@ -69,4 +70,11 @@ export const updatePostController = async (req, res) => {
     console.log(postId)
     await deletePostDb(postId,userId)
     res.status(400).send('deleted successfully')
+  }
+
+
+  export const searchPostsController = async (req,res)=>{
+    const keyword =  req.body.keyword
+    const foundPosts = await searchPostDb(keyword)
+    res.send(foundPosts)
   }

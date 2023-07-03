@@ -13,7 +13,6 @@ router.post('/comments/:postid', auth, createComment)
 router.get('/comments/:postid', auth, getComment)
 
 
-//delete authenciated users comment
 
 
 

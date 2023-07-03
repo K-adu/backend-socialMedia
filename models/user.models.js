@@ -18,6 +18,27 @@ const pointSchema = new mongoose.Schema({
 
 
 
+
+//notification schema
+const notificationSchema = new mongoose.Schema({
+    postComment: {
+        type: Boolean,
+        default: true,
+    },
+    postLike: {
+        type: Boolean,
+        default: true,
+    },
+})
+
+//award schema
+const awardSchema = new mongoose.Schema({
+    name: {
+      type: String,
+    },
+  });
+
+
 //user Schema
 const userSchema = new mongoose.Schema({
     fullName: {
@@ -52,6 +73,13 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    notificationSettings: {
+        type: notificationSchema,
+        default: () => ({
+
+        })
+    },
+    award: [awardSchema],
     address: [{
         city: { type: String, default: null },
         state: { type: String, default: null },

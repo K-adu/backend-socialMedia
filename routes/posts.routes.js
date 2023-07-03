@@ -6,7 +6,8 @@ import {
     getUserPosts,
     getUserPostCounts,
     updatePostController,
-    deletePostController
+    deletePostController,
+    searchPostsController
 } from '../controller/posts.controller.js';
 
 const router = express.Router()
@@ -26,6 +27,11 @@ router.get('/postcount', getUserPostCounts)
 
 // update existing post
 router.patch('/post/:id', auth, updatePostController)
+
+//search for a post
+router.post('/posts/search',auth,searchPostsController)
+
+
 
 //delete all the post comments and likes of the respective posts
 router.delete('/delete/:id', auth, deletePostController)

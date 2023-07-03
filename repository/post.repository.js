@@ -329,3 +329,14 @@ export const deletePostDb = async (postId, userId) => {
     console.error('Error deleting post:', error.message);
   }
 }
+
+
+
+
+//searching for posts
+export const searchPostDb = async (keyword)=>{
+  const posts = Posts.find({$text:{
+    $search: keyword 
+  }})
+  return posts
+}
