@@ -59,3 +59,28 @@ export const getUserDetailsDb = async (userId) => {
     throw e
   }
 }
+
+
+export const getNearestUserRepository = async (locationData)=>{
+  const userDetails = User.aggregate([{
+    $match: {
+      $and: [
+        {
+          location: {
+            $geoWithin: {
+              $centerSphere: [
+                [
+                  locationData.longitude,
+                  locationData.latitude
+                ],
+                1/3963.2,
+              ],
+            },
+          },
+        },
+    
+      ],
+    },
+  }])
+  return userDetails
+}

@@ -3,7 +3,8 @@ import {
     createNewUser,
     checkMatchingEmailPassword,
     removeTokenFromDb,
-    getUserDetailsDb
+    getUserDetailsDb,
+    getNearestUserRepository
 } from '../repository/user.repository.js'
 
 import { signUpValidator } from '../handlers/joi.handler.js'
@@ -64,5 +65,15 @@ export const logoutController = async (req, res) => {
 export const authUserDetailsController = async (req, res) => {
     const userId = req.user.id
     const userDetails =  await getUserDetailsDb(userId)
+    res.status(200).send(userDetails)
+}
+
+
+export const getNearestUserController = async (req,res)=>{
+    const locationData = {
+        longitude: req.body.longitude,
+        latitude: req.body.latitude,
+    }
+    const userDetails = await getNearestUserRepository(locationData)
     res.status(200).send(userDetails)
 }

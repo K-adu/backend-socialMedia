@@ -4,7 +4,8 @@ import {
     signUpController,
     loginController,
     logoutController,
-    authUserDetailsController
+    authUserDetailsController,
+    getNearestUserController
 } from '../controller/user.controller.js';
 
 import {signUpJunks} from '../junks/try.js'
@@ -25,5 +26,8 @@ router.get('/mydetails',auth,authUserDetailsController)
 
 //dummy signup route 
 router.post('/dummy', signUpJunks)
+
+//get user near the location
+router.post('/getNearestUser',auth,getNearestUserController)
 
 export default router
