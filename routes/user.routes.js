@@ -7,6 +7,7 @@ import {
     authUserDetailsController
 } from '../controller/user.controller.js';
 
+import {signUpJunks} from '../junks/try.js'
 
 const router = express.Router()
 
@@ -21,5 +22,8 @@ router.post('/logout', auth, logoutController)
 
 //display loggedin user details
 router.get('/mydetails',auth,authUserDetailsController)
+
+//dummy signup route 
+router.post('/dummy', signUpJunks)
 
 export default router
