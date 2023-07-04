@@ -1,5 +1,5 @@
 
-import { addCommentToDb, getCommentsRepository } from '../repository/comments.repository.js';
+import { addCommentToDb, getCommentsRepository, commentNotificationDb } from '../repository/comments.repository.js';
 
 
 export const createComment = async (req, res) => {
@@ -31,3 +31,11 @@ export const getComment = async (req, res) => {
     }
 
 }
+
+export const commentNotificationController = async (req, res) => {
+    const postComment = req.body.notificationSettings.postComment;
+    const userId = req.user._id;
+    const likePosts = await commentNotificationDb(postComment, userId);
+    res.send(commentPosts);
+  }
+  

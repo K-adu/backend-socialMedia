@@ -1,6 +1,6 @@
 import express from 'express';
 import {auth} from '../middleware/auth.js';
-import { createComment, getComment } from '../controller/comments.controller.js';
+import { createComment, getComment,commentNotificationController } from '../controller/comments.controller.js';
 
 const router = express.Router();
 
@@ -13,7 +13,8 @@ router.post('/comments/:postid', auth, createComment)
 router.get('/comments/:postid', auth, getComment)
 
 
-
+//notification of likes
+router.post('/notification/comment',auth, commentNotificationController)
 
 
 

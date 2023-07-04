@@ -1,6 +1,6 @@
-import Like from '../models/likes.models.js';
-import Posts from '../models/posts.models.js';
-
+import Like from '../models/likes.models.js'
+import Posts from '../models/posts.models.js'
+import User from '../models/user.models.js'
 
 
 export const likeaPostDb = async (postId, userId) => {
@@ -28,6 +28,14 @@ export const checkLikePostByUserOnce = async (postId, userId) => {
 }
 
 
-export const likeNotificationDb = async (postLike,userId)=>{
-
-}
+export const likeNotificationDb = async (postLike, userId) => {
+    console.log(postLike)
+    const likeController = await User.findOneAndUpdate(
+      { _id: userId },
+      {
+        $set: { "notificationSettings.postLike": postLike },
+      },
+    );
+    return likeController;
+  };
+  

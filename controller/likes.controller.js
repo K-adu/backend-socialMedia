@@ -27,11 +27,9 @@ export const likeaPostController = async (req, res) => {
 
 
 }
-
-
 export const likeNotificationController = async (req, res) => {
-    const postLike = req.body.postLike
-    const userId = req.user._id
-    const likePosts = await likeNotificationDb(postLike,userId)
-    res.send(likePosts)
+  const postLike = req.body.notificationSettings.postLike;
+  const userId = req.user._id;
+  const likePosts = await likeNotificationDb(postLike, userId);
+  res.send(likePosts);
 }
