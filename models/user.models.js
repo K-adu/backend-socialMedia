@@ -34,9 +34,9 @@ const notificationSchema = new mongoose.Schema({
 //award schema
 const awardSchema = new mongoose.Schema({
     name: {
-      type: String,
+        type: String,
     },
-  });
+});
 
 
 //user Schema
@@ -103,26 +103,25 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true, })
 
 
-
+// a hashpassowrd hooks before it is sent to the databse
 userSchema.methods.hashpassword = async (password) => {
     return await bcrypt.hash(password, 8);
 };
 
 
 
-
+// match password hooks before fetching the password from the database
 userSchema.methods.matchPassword = async function (password) {
     console.log(this.password)
     return await bcrypt.compare(password, this.password);
 };
 
+//generation of auth token
 userSchema.methods.generateAuthToken = async function () {
     const user = this
     const token = jwt.sign({ _id: user._id.toString() }, 'nikejustdoit')
-
     user.tokens = user.tokens.concat({ token })
     await user.save()
-
     return token
 }
 

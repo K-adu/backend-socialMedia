@@ -30,22 +30,17 @@ export const getHobbies = async (req, res) => {
     } catch (e) {
         res.status(400).send('failed to get hobbies')
     }
-
-
-
 }
 
 
-
 export const getSimilarHobbiesUserController = async (req, res) => {
-
     const hobbiesId = req.params.id
     const users = await getSimilarHobbiesUserRepo(hobbiesId)
     res.send(users)
 }
 
 
-export const getUserandHobbiesController =  async (req,res) =>{
+export const getUserandHobbiesController = async (req, res) => {
     const age = req.params.age
     const userDetails = await getUserandHobbiesRepository(age)
     res.status(200).send(userDetails)

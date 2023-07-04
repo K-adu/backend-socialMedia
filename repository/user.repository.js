@@ -1,14 +1,36 @@
 import User from '../models/user.models.js';
+import { conn } from '.././dbconn.js'
+import { dummyEmail } from '../handlers/email.handler.js'
 
 
 //creating new user and hasigin password before inserting it to the db
 export const createNewUser = async (data) => {
-  const newUser = new User(data);
+  const session = await conn.startSession();
+  try {
+    await session.startTransaction();
 
-  newUser.password = await newUser.hashpassword(data.password);
-  const userCreated = await User.create(newUser)
-  return userCreated
-}
+    const newUser = new User(data);
+    newUser.password = await newUser.hashpassword(data.password);
+
+    const userCreated = await User.create(newUser, { session });
+
+    const emailSuccess =  dummyEmail();
+
+    if (emailSuccess) {
+      await session.commitTransaction();
+    } else {
+      await session.abortTransaction();
+    }
+
+    return userCreated;
+  } catch (error) {
+    console.log(error);
+    await session.abortTransaction();
+  } finally {
+    session.endSession();
+  }
+};
+
 
 
 //finding checking if the email exists or not
@@ -60,8 +82,8 @@ export const getUserDetailsDb = async (userId) => {
   }
 }
 
-
-export const getNearestUserRepository = async (locationData)=>{
+// getting nearest users to the provided location the 1/smth is radius value is  radian 
+export const getNearestUserRepository = async (locationData) => {
   const userDetails = User.aggregate([{
     $match: {
       $and: [
@@ -73,12 +95,12 @@ export const getNearestUserRepository = async (locationData)=>{
                   locationData.longitude,
                   locationData.latitude
                 ],
-                1/3963.2,
+                1 / 3963.2,
               ],
             },
           },
         },
-    
+
       ],
     },
   }])

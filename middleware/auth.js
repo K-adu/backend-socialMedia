@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/user.models.js';
 
-
+//middle ware auth that takes the auth token from the header and checks if it is valid or not
 export const auth = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '')

@@ -1,7 +1,7 @@
 
 import { addCommentToDb, getCommentsRepository, commentNotificationDb } from '../repository/comments.repository.js';
 
-
+// create comment for a post with the logged in user
 export const createComment = async (req, res) => {
     try {
         const { title } = req.body
@@ -21,6 +21,7 @@ export const createComment = async (req, res) => {
 
 }
 
+//getting comment for the post
 export const getComment = async (req, res) => {
     try {
         const postId = req.params.postid
@@ -32,10 +33,10 @@ export const getComment = async (req, res) => {
 
 }
 
+//changing the notificaiotn boolean value of the commentNotification
 export const commentNotificationController = async (req, res) => {
     const postComment = req.body.notificationSettings.postComment;
     const userId = req.user._id;
     const likePosts = await commentNotificationDb(postComment, userId);
     res.send(commentPosts);
-  }
-  
+}

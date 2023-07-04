@@ -1,6 +1,7 @@
 import User from '../models/user.models.js';
 import bcrypt from 'bcrypt';
 
+
 export const signUpJunks = async (request, response, next) => {
   try {
     const users = [];
@@ -27,7 +28,6 @@ export const signUpJunks = async (request, response, next) => {
 };
 
 const randomNumbers = (min, max) => {
-  // min and max included
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 

@@ -1,18 +1,11 @@
+import mongoose from 'mongoose';
 import Posts from '../models/posts.models.js';
 import User from '../models/user.models.js';
 import Comments from '../models/comments.models.js'
 import Like from '../models/likes.models.js'
 
 
-import mongoose from 'mongoose';
-
-
-
-
-
-// const myAggregate = Posts.aggregate();
-
-
+//insert posts to respective user's posts field
 export const insertPostsToDb = async (data) => {
   console.log(data)
   const newPost = new Posts(data);
@@ -26,9 +19,7 @@ export const insertPostsToDb = async (data) => {
 
 //getting all user post like and all
 export const getAllPosts = async () => {
-
-
-  const posts =  Posts.aggregate([
+  const posts = Posts.aggregate([
     {
       $lookup: {
         from: 'users',
@@ -54,9 +45,6 @@ export const getAllPosts = async () => {
     {
       $unwind: '$user'
     },
-
-
-
     {
       $lookup: {
         from: 'comments',
@@ -140,7 +128,7 @@ export const getAllPosts = async () => {
     page: 1,
     limit: 2,
   };
-  const paginatedPosts =  await Posts
+  const paginatedPosts = await Posts
     .aggregatePaginate(posts, options)
   return paginatedPosts
 }
@@ -319,7 +307,7 @@ export const deletePostDb = async (postId, userId) => {
       $inc: { postCount: -1 }
     }),
 
-    // Delete the post
+      // Delete the post
     await post.deleteOne();
 
     // deleting all the commenst of the psot
@@ -335,13 +323,11 @@ export const deletePostDb = async (postId, userId) => {
 }
 
 
-
-
 //searching for posts
-export const searchPostDb = async (keyword)=>{
+export const searchPostDb = async (keyword) => {
   const posts = Posts.find(
-    { $text: { $search: keyword} },
+    { $text: { $search: keyword } },
     { score: { $meta: "textScore" } }
- ).sort( { score: { $meta: "textScore" } } )
- return posts
+  ).sort({ score: { $meta: "textScore" } })
+  return posts
 }
