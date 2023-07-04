@@ -1,7 +1,8 @@
 import {
     addHobbiesToDb,
     getHobbiesFromDb,
-    getSimilarHobbiesUserRepo
+    getSimilarHobbiesUserRepo,
+    getUserandHobbiesRepository,
 } from '../repository/hobbies.repository.js';
 
 //adding hobbies
@@ -38,7 +39,14 @@ export const getHobbies = async (req, res) => {
 
 export const getSimilarHobbiesUserController = async (req, res) => {
 
-    const name = req.body.name
-    const users = await getSimilarHobbiesUserRepo(name)
+    const hobbiesId = req.params.id
+    const users = await getSimilarHobbiesUserRepo(hobbiesId)
     res.send(users)
+}
+
+
+export const getUserandHobbiesController =  async (req,res) =>{
+    const age = req.params.age
+    const userDetails = await getUserandHobbiesRepository(age)
+    res.status(200).send(userDetails)
 }

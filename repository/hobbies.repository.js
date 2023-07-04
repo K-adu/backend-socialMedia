@@ -64,11 +64,11 @@ export const getHobbiesFromDb = async (userId) => {
 }
 
 
-export const getSimilarHobbiesUserRepo = async (name) => {
-  const hobbies = await Hobbies.find({name}).select('_id');
+export const getSimilarHobbiesUserRepo = async (hobbiesId) => {
+  console.log(hobbiesId)
+  const hobbies = await Hobbies.find({ _id: hobbiesId }).select('_id');
   console.log(hobbies)
   const hobbyIds = hobbies.map(hobby => hobby._id);
-  console.log(hobbyIds)
   const users = await User.aggregate([
     {
       $match: {
@@ -82,11 +82,46 @@ export const getSimilarHobbiesUserRepo = async (name) => {
       }
     }
   ]);
-  
-  console.log(users);
-  return users;
+
+  // console.log(users);
   return users
 
 }
 
 
+export const getUserandHobbiesRepository = async (age) => {
+  const ageValue = age
+  console.log(age)
+  const userDetails = await User.aggregate([
+    {
+      $match: {
+        age: { $lt: 50 },
+        status: false,
+        hobbies: { $exists: true, $ne: [] }
+      }
+    },
+    {
+      $lookup: {
+        from: 'hobbies',
+        localField: 'hobbies',
+        foreignField: '_id',
+        as: 'hobbiesDetails'
+      }
+    },
+    {
+      $project: {
+        _id: 0,
+        fullName: 1,
+        email: 1,
+        posts: 1,
+        address: 1,
+        name: 1,
+        age: 1,
+        hobbies: '$hobbiesDetails',
+      }
+    }
+  ])
+  return userDetails
+  
+
+}
